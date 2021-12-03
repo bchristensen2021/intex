@@ -2,10 +2,10 @@ from django.urls import path
 from .views import indexPageView, searchPrescriberPageView, searchDrugPageView, detailsDrugPageView, detailsPrescriberPageView
 
 urlpatterns = [
-    path('detailsprescriber/' , detailsPrescriberPageView, name="detailsPerscriber"),
-    path('detailsDrug/' , detailsDrugPageView, name="detailsDrug"),
-    path('searchDrugs/' , searchDrugPageView, name="searchDrugs" ),
-    path('searchPrescribers/' , searchPrescriberPageView, name="searchPerscriber" ),
+    path('prescribers/detail/' , detailsPrescriberPageView, name="detailsPrescriber"),
+    path('drugs/detail/' , detailsDrugPageView, name="detailsDrug"),
+    path('drugs/search/' , searchDrugPageView, name="searchDrug" ),
+    path('prescribers/search/' , searchPrescriberPageView, name="searchPrescriber" ),
     path("", indexPageView, name="index"),
 ]
 
