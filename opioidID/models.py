@@ -43,8 +43,14 @@ class Prescriber(models.Model):
     first_name = models.CharField(max_length=11, db_column="firstname", null=False)
     last_name = models.CharField(max_length=11, db_column="lastname", null=False)
     gender = models.CharField(max_length=1, db_column="gender", null=False)
+    specialty = models.CharField(max_length=62, db_column="specialty", null=False)
     state = models.ForeignKey("State", db_column="state", null=False, on_delete=models.PROTECT)
     drugs = models.ManyToManyField(Drug, through=DrugPrescriber)
+
+    @property
+    def full_name(self):
+        return self.first_name + " " + self.last_name
+        
     class Meta:
         db_table = "prescriber"
         managed = False
