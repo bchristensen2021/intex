@@ -97,3 +97,60 @@ def detailsPrescriberPageView(request, npi):
 
     return render(request, 'opioidID/detailsPrescriber.html', context)
 
+def analyticsPageView(request):
+    return render(request, 'opioidID/analytics.html')
+
+def deathsByStatePageView(request):
+    # get all 50 states (doesn't include things like Puerto rico with no statistics)
+    states = [{
+        "state_name": s.state_name,
+        "population": s.population,
+        "deaths": s.deaths,
+        "deaths_per_hundred_thousand": s.deaths_per_hundred_thousand()
+    } for s in State.objects.filter(population__gt=0)]
+    print(type(states))
+    print((states[0]))
+    states = sorted(states, key=lambda s: -s["deaths_per_hundred_thousand"])
+    context = {
+        "states": states
+    }
+
+    return render(request, 'opioidID/deathsByState.html', context)
+
+def opioidQuantitiesPageView(request):
+    opioids = Drug.objects.filter(is_opioid=True)
+    data = {
+        "drugs": []
+    }
+    totalQuantity = 0
+    for o in opioids:
+        quantity = DrugPrescriber.objects.filter(drug=o.drug_name).aggregate(total=Sum('quantity'))['total']
+        data["drugs"].append({
+            "drug_name": o.drug_name,
+            "quantity": quantity
+        })
+        totalQuantity += quantity
+
+    # sort drugs by quantity
+    data["drugs"] = sorted(data["drugs"], key=lambda d: -d["quantity"])
+
+    data["total_quantity"] = totalQuantity
+    
+    return render(request, 'opioidID/opioidQuantities.html', data)
+
+def prescribersOnlyOpioidsPageView(request):
+    # get all prescribers who have ever prescribed something not an opioid
+    opioids = [(d.drug_name) for d in Drug.objects.filter(is_opioid=True)]
+    havePrescribedNotOpioids = [(p["prescriber"]) for p in DrugPrescriber.objects.all().exclude(drug__in=opioids).values("prescriber").distinct()]
+    # get all prescribers who HAVE prescribed an opioid
+    # and remove all the ones that are in the previous list
+    # this variable only has NPIs in it
+    prescribedOnlyOpioids = [(p["prescriber"]) for p in DrugPrescriber.objects.filter(drug__in=opioids).exclude(prescriber__in=havePrescribedNotOpioids).values('prescriber').distinct()]
+
+    finalData = Prescriber.objects.filter(npi__in=prescribedOnlyOpioids)
+    
+    context = {
+        "prescribedOnlyOpioids": finalData
+    }
+
+    return render(request, 'opioidID/onlyOpioids.html', context)

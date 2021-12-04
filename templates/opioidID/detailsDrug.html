@@ -28,7 +28,7 @@
             {% for p in top_prescribers %}
             <tr class="table-primary">
                 <td>
-                    <a class="text-dark text-decoration-none" href={% url 'detailsPrescriber' npi=p.prescriber.npi %}>
+                    <a class="text-dark fw-bold" href={% url 'detailsPrescriber' npi=p.prescriber.npi %}>
                         {{p.prescriber.full_name}}
                     </a>
                 </td>
