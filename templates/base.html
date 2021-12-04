@@ -6,9 +6,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Opioid ID</title>
+        <title>Opioid ID | Track Down Opioid Abuse</title>
+
         <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        {% comment %} <link rel="icon" type="image/x-icon" href="{% static 'img/portfolio/thumbnails/1.jpg' %}" /> {% endcomment %}
         <!-- Bootstrap Icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Google fonts-->
@@ -18,9 +19,11 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+        <div style="background-image: url({% static 'img/bg/bg1.jpg' %});">
     </head>
     <body>
     <!--Navigation-->
+    
         <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
             <div class="container px-4 px-lg-5">
                 <a class="navbar-brand" href="#page-top">OpioidID</a>
@@ -33,8 +36,16 @@
                 </div>
             </div>
         </nav>
-    <!-- End Navigation-->
-    {% block content%}
-    {% endblock %} 
+             
+        <!-- End Navigation-->
+        {% block content%}
+        {% endblock %} 
+
+        <!-- Footer-->
+        <footer class="bg-light py-3">
+            <div class="container">
+                <div class="small text-center text-muted">Copyright &copy; 2021 - Company Name</div>
+            </div>
+        </footer>
     </body>
 </html> 
