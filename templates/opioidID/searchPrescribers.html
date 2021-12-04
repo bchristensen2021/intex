@@ -4,17 +4,16 @@
     <section class="page-section bg-primary" id="about">
         <div class="container px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
-                <div class="col-lg-8 text-center">
+                <div class="col-lg-8">
+                    <h1 class="display-4 text-light">Search Prescribers</h1>
                     <form name="search-prescribers" method="post" action="{% url 'searchPrescriber' %}" id="search-prescribers">
                         {% csrf_token %}
                         <div class="form-floating">
                             <input class="form-control" type="search" id="first_name" name="name" aria-label="name" placeholder="First Name">
                             <label for="first_name">Prescriber Name</label>
                         </div>
-                        <br>
 
-                        <div class="container">
-                            <div class="row">
+                            <div class="row mt-2">
                                 <div class="col">
                                     <div class="form-floating">
                                     <select class="form-select" id="gender" name='gender'>
@@ -50,23 +49,24 @@
                                             {% endfor %}
                                     </select>
                                     <label for="state">State</label>
+                                    </div>
+                                </div>
+
+                                <div class="col ">
+                                    <button class="btn btn-light btn-xl w-100" type="submit">Search</button>
                                 </div>
 
                             </div>
-                        </div>
-                        
-                        <br>
-                        <button class="btn btn-light btn-xl" type="submit" href="#services">Search</button>
-                        <br>
-
                     </form>
+
                     {% if search_results %}
-                    <ul class="list-group-primary">
+                    <h2 class="display-10 mt-3 text-light">Search Results</h2>
+                    <ul class="list-group-primary mt-2 ps-0">
                         {% for prescriber in search_results %}
                         <a href={% url "detailsPrescriber" npi=prescriber.npi %}
-                        <li class="list-group-item d-flex justify-content-between align-items-start" aria-current="true">
-                            <div class="container">
-                              <h5 class="fw-bold align-left">{{prescriber.full_name}} ({{prescriber.gender}})</h5>
+                        <li class="list-group-item d-flex justify-content-between align-items-start mt-2" aria-current="true">
+                            <div class="ms-2 me-auto">
+                              <h5 class="fw-bold">{{prescriber.full_name}} ({{prescriber.gender}})</h5>
                               <small>{{prescriber.specialty}}, {{prescriber.state.state_name}}</small>
                             </div>
                         </li>

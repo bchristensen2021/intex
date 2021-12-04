@@ -2,10 +2,34 @@
 {% load static %}
 {% block content %}
 <section class="page-section bg-primary" id="about">
-    <div class="container px-4 px-lg-5">
-    <h1>  
-        {{prescriber.first_name}} {{prescriber.last_name}}
-    </hi>
+<div class="container px-4 px-lg-5">
+    <div class="card p-3">
+        <h1 class="display-5">  
+            <i class="bi bi-person-circle display-2"></i>
+            {{prescriber.first_name}} {{prescriber.last_name}}
+        </h1>
+        <div class="card-text">
+        Specializes in {{prescriber.specialty}}
+        <br>
+        Resides in {{prescriber.state.state_name}}
+        <br>
+        Total prescriptions: {{totalPresc.total}}
+        </div>
+    </div>
+    <table class="table mt-2">
+        <thead>
+            <tr class="table-light">
+                <th scope="col">Drug Name</th>
+                <th scope="col">Quantity Prescribed</th>
+            </tr>
+        </thead>
+        {% for p in prescriptions %}
+        <tr class="table-primary">
+            <td>{{p.drug | title}}</td>
+            <td>{{p.quantity}}</td>
+        </tr>
+        {% endfor %}
+    </table>
 </div>
 </section>
 

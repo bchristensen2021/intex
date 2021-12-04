@@ -1,7 +1,8 @@
 from django import http
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Drug, Prescriber, State
+from .models import Drug, Prescriber, State, DrugPrescriber
+from django.db.models import Sum
 
 
 # Create your views here.
@@ -53,9 +54,13 @@ def detailsDrugPageView(request, drug_name):
 def detailsPrescriberPageView(request, npi):
 
     prescriber = Prescriber.objects.get(npi=npi)
+    prescriptions = DrugPrescriber.objects.filter(prescriber=npi).order_by('-quantity')
+    totalPresc = prescriptions.aggregate(total=Sum('quantity'))
 
     context = {
         'prescriber' : prescriber,
+        'prescriptions' : prescriptions,
+        'totalPresc' : totalPresc
     }    
 
     return render(request, 'opioidID/detailsPrescriber.html', context)
