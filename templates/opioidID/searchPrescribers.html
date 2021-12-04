@@ -13,7 +13,7 @@
 
                         <label for="gender">Gender</label>
                         <select class="form-control form-control-lg" id="gender" name='gender'>
-                            <option value="" disabled selected hidden>Any Gender</option>
+                            <option value="" selected>Any Gender</option>
                             <option value="M">Male</option>
                             <option value="F">Female</option>
                         </select>
@@ -21,7 +21,7 @@
 
                         <label for="specialty">Specialty</label>
                         <select class="form-control form-control-lg" id='specialty' name='specialty'>
-                            <option value="" disabled selected hidden>Any Specialty</option>
+                            <option value="" selected>Any Specialty</option>
                             {% for specialty in specialties %}
                             <option value="{{specialty.specialty}}">{{specialty.specialty}}</option>
                             {% endfor %}
@@ -30,7 +30,7 @@
 
                         <label for="state">State</label>
                         <select class="form-control form-control-lg" id='specialty' name='state'>
-                                <option value="" disabled selected hidden>Any State</option>
+                                <option value="" selected>Any State</option>
                                 {% for state in states %}
                                 <option value="{{state}}">{{state.state_name}}</option>
                                 {% endfor %}
