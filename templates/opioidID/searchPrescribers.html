@@ -5,85 +5,55 @@
         <div class="container px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-lg-8 text-center">
-                    {% comment %} <h2 class="text-white mt-0">We've got what you need!</h2> {% endcomment %}
-                    <form name="searchPrescribers" method="get" action="{% url 'detailsPrescriber' %}">
-                        <label for="searchPrescribers">Search Prescribers</label>
-                        <input class="form-control form-control-lg" type="search" id="searchPrescribers" name="searchPrescribers" aria-label="Search Prescribers">
+                    <form name="search-prescribers" method="post" action="{% url 'searchPrescriber' %}" id="search-prescribers">
+                        {% csrf_token %}
+                        <label for="first_name">Name</label>
+                        <input class="form-control form-control-lg" type="search" id="first_name" name="name" aria-label="name" placeholder="First Name">
                         <br>
-                        <select class="form-control form-control-lg" name='gender'>
-                            <option value="">Gender</option>
+
+                        <label for="gender">Gender</label>
+                        <select class="form-control form-control-lg" id="gender" name='gender'>
+                            <option value="" disabled selected hidden>Any Gender</option>
                             <option value="M">Male</option>
                             <option value="F">Female</option>
                         </select>
                         <br>
-                        <select class="form-control form-control-lg" name='specialty'>
-                            <option value="">Specialty</option>
-                            <option value="">Specialty</option>
-                            <option value="">Specialty</option>
-                            <option value="">Specialty</option>
-                            <option value="">Specialty</option>
+
+                        <label for="specialty">Specialty</label>
+                        <select class="form-control form-control-lg" id='specialty' name='specialty'>
+                            <option value="" disabled selected hidden>Any Specialty</option>
+                            {% for specialty in specialties %}
+                            <option value="{{specialty.specialty}}">{{specialty.specialty}}</option>
+                            {% endfor %}
                         </select>
                         <br>
-                        <select class="form-control form-control-lg" name='state'>
-                                <option value="">State/Territory</option>
-                                <option value="AE">Armed Forces Europe</option>
-                                <option value="AK">Alaska</option>
-                                <option value="AL">Alabama</option>
-                                <option value="AR">Arkansas</option>
-                                <option value="AZ">Arizona</option>
-                                <option value="CA">California</option>
-                                <option value="CO">Colorado</option>
-                                <option value="CT">Connecticut</option>
-                                <option value="DC">Washington DC</option>
-                                <option value="DE">Delaware</option>
-                                <option value="FL">Florida</option>
-                                <option value="GA">Georgia</option>
-                                <option value="HI">Hawaii</option>
-                                <option value="IA">Iowa</option>
-                                <option value="ID">Idaho</option>
-                                <option value="IL">Illinois</option>
-                                <option value="IN">Indiana</option>
-                                <option value="KS">Kansas</option>
-                                <option value="KY">Kentucky</option>
-                                <option value="LA">Louisiana</option>
-                                <option value="MA">Massachusetts</option>
-                                <option value="MD">Maryland</option>
-                                <option value="ME">Maine</option>
-                                <option value="MI">Michigan</option>
-                                <option value="MN">Minnesota</option>
-                                <option value="MO">Missouri</option>
-                                <option value="MS">Mississippi</option>
-                                <option value="MT">Montana</option>
-                                <option value="NC">North Carolina</option>
-                                <option value="ND">North Dakota</option>
-                                <option value="NE">Nebraska</option>
-                                <option value="NH">New Hampshire</option>
-                                <option value="NJ">New Jersey</option>
-                                <option value="NM">New Mexico</option>
-                                <option value="NV">Nevada</option>
-                                <option value="NY">New York</option>
-                                <option value="OH">Ohio</option>
-                                <option value="OK">Oklahoma</option>
-                                <option value="OR">Oregon</option>
-                                <option value="PA">Pennsylvania</option>
-                                <option value="PR">Puerto Rico</option>
-                                <option value="RI">Rhode Island</option>
-                                <option value="SC">South Carolina</option>
-                                <option value="SD">South Dakota</option>
-                                <option value="TN">Tennessee</option>
-                                <option value="TX">Texas</option>
-                                <option value="UT">Utah</option>
-                                <option value="VA">Virginia</option>
-                                <option value="VI">Virgin Islands</option>
-                                <option value="VT">Vermont</option>
-                                <option value="WA">Washington</option>
-                                <option value="WI">Wisconsin</option>
-                                <option value="WV">West Virginia</option>
-                                <option value="WY">Wyoming</option>
+
+                        <label for="state">State</label>
+                        <select class="form-control form-control-lg" id='specialty' name='state'>
+                                <option value="" disabled selected hidden>Any State</option>
+                                {% for state in states %}
+                                <option value="{{state}}">{{state.state_name}}</option>
+                                {% endfor %}
                         </select>
                         <br>
+
                         <button class="btn btn-light btn-xl" type="submit" href="#services">Search</button>
+
                     </form>
+                    {% if search_results %}
+                    <ul class="list-group-primary">
+                        {% for prescriber in search_results %}
+                        <a href={% url "detailsPrescriber" %}
+                        <li class="list-group-item d-flex justify-content-between align-items-start" aria-current="true">
+                            <div class="ms-2 me-auto">
+                              <h5 class="fw-bold">{{prescriber.full_name}} ({{prescriber.gender}})</h5>
+                              <small>{{prescriber.specialty}}, {{prescriber.state.state_name}}</small>
+                            </div>
+                        </li>
+                        </a>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
                 </div>
             </div>
         </div>
