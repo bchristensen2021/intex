@@ -13,20 +13,34 @@
         <br>
         Resides in {{prescriber.state.state_name}}
         <br>
-        Total prescriptions: {{totalPresc.total}}
+        {{totalPresc.total}} total prescriptions
         </div>
     </div>
+
     <table class="table mt-2">
         <thead>
             <tr class="table-light">
                 <th scope="col">Drug Name</th>
                 <th scope="col">Quantity Prescribed</th>
+                <th scope="col">Average Prescribed by All Prescribers</th>
             </tr>
         </thead>
         {% for p in prescriptions %}
         <tr class="table-primary">
-            <td>{{p.drug | title}}</td>
-            <td>{{p.quantity}}</td>
+            <td>
+                {{p.drug.drug_name | title}}
+                {% if p.drug.is_opioid %}
+                <span class="badge badge-pill bg-danger ms-2">Opioid</span>
+                {% endif %}
+            </td>
+            <td>{{p.quantity}}
+                {% if p.diff > 75 %}
+                <span class="badge badge-pill bg-success ms-2">{{ p.diff}}% above average</span>
+                {% elif p.diff < -75 %}
+                <span class="badge badge-pill bg-warning ms-2">{{ p.diff}}% below average</span>
+                {% endif %}
+            </td>
+            <td>{{p.average}}</td>
         </tr>
         {% endfor %}
     </table>
