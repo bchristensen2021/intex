@@ -5,9 +5,16 @@
 <section class="page-section bg-primary" id="about">
     <div class="container px-4 px-lg-5">
         <h1 class="display-5 text-light">Additional Analytics</h1>
-        <a class="btn btn-dark" href={% url 'deathsByState' %}>Deaths By State</a>
-        <a class="btn btn-dark" href={% url 'opioidQuantities' %}>Opioid Quantities</a>
+        <br>
+        <a class="btn btn-dark m-2" href={% url 'deathsByState' %}>Opioid Deaths By State</a>
+        <br>
+        <a class="btn btn-dark m-2" href={% url 'opioidQuantities' %}>Opioid Prescription Quantities</a>
+        <br>
+        <!-- Outdated since the next link does all the same stuff
         <a class="btn btn-dark" href={% url 'onlyOpioids' %}>Prescribers Who Prescribe Only Opioids</a>
+        <br>
+        -->
+        <a class="btn btn-dark m-2" href={% url 'highOpioidPrescribers' %}>Prescribers Who Prescribe Mainly Opioids</a>
     </div>
 </section>
     

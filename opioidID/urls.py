@@ -10,6 +10,7 @@ urlpatterns = [
     path('analytics/deaths-by-state', deathsByStatePageView, name="deathsByState"),
     path('analytics/opioid-quantities', opioidQuantitiesPageView, name="opioidQuantities"),
     path('analytics/prescribers-only-opioids', prescribersOnlyOpioidsPageView, name="onlyOpioids"),
+    path('analytics/high-opioid-ratio', highOpioidRatioPageView, name="highOpioidPrescribers"),
     path("", indexPageView, name="index"),
 ]
 

@@ -36,6 +36,10 @@ def searchPrescriberPageView(request):
 
         # filter the results further by first and last name (can't do this in the filter)
         search_results = [result for result in search_results if name.lower() in result.full_name.lower()]
+
+        # limit to 100 results
+        search_results = search_results[:100]
+
         context["search_results"] = search_results
 
 
@@ -148,9 +152,33 @@ def prescribersOnlyOpioidsPageView(request):
     prescribedOnlyOpioids = [(p["prescriber"]) for p in DrugPrescriber.objects.filter(drug__in=opioids).exclude(prescriber__in=havePrescribedNotOpioids).values('prescriber').distinct()]
 
     finalData = Prescriber.objects.filter(npi__in=prescribedOnlyOpioids)
-    
+
     context = {
         "prescribedOnlyOpioids": finalData
     }
 
     return render(request, 'opioidID/onlyOpioids.html', context)
+
+def highOpioidRatioPageView(request):
+    highOpioidRatioPrescribers = Prescriber.objects.raw("""
+    select *,
+    (select sum(dp.quantity) from drug_prescriber dp inner join drug d on dp.drugname = d.drugname
+                where prescribernpi = p.npi and isopioid = TRUE group by prescribernpi) AS opioid_presc_total,
+    (select sum(dp.quantity) from drug_prescriber dp
+                where prescribernpi = p.npi group by prescribernpi) AS presc_total,
+    (ROUND(CAST(CAST((select sum(dp.quantity) from drug_prescriber dp inner join drug d on dp.drugname = d.drugname
+                where prescribernpi = p.npi and isopioid = TRUE group by prescribernpi) AS NUMERIC) /
+    CAST((select sum(dp.quantity) from drug_prescriber dp
+                where prescribernpi = p.npi group by prescribernpi) AS NUMERIC) AS NUMERIC),2) * 100)::INTEGER AS percent_opioid
+    from prescriber p
+    where (select sum(dp.quantity) from drug_prescriber dp inner join drug d on dp.drugname = d.drugname
+                where prescribernpi = p.npi and isopioid = TRUE group by prescribernpi) IS NOT NULL
+    order by percent_opioid DESC;
+    """)
+
+    # arbitrarily limit to the first 200 results
+    context = {
+        "highOpioidRatioPrescribers": highOpioidRatioPrescribers[:200]
+    }
+
+    return render(request, "opioidID/highOpioidRatio.html", context)
