@@ -42,13 +42,34 @@ def searchPrescriberPageView(request):
     return render(request, 'opioidID/searchPrescribers.html', context)
 
 def searchDrugPageView(request):
-    return render(request, 'opioidID/searchDrugs.html')
+    context = {}
+    if(request.method == "POST"):
+        drugName = request.POST.get("drug_name")
+        isOpioid = request.POST.get("is_opioid")
+        search_results = Drug.objects.filter(drug_name__contains=drugName)
+        if(isOpioid == "True"):
+            search_results = search_results.filter(is_opioid=True)
+        elif(isOpioid == "False"):
+            search_results = search_results.filter(is_opioid=False)
+        context = {
+            "search_results" : search_results
+        }
+    return render(request, 'opioidID/searchDrugs.html', context)
 
 def detailsDrugPageView(request, drug_name):
     details_drug = Drug.objects.get(drug_name = drug_name)
+    top_prescribers = DrugPrescriber.objects.values('prescriber').filter(drug = drug_name).annotate(total=Sum('quantity')).order_by('-total')[:10]
+    data = []
+    for p in top_prescribers:
+        data.append({
+            "prescriber": Prescriber.objects.get(pk=p["prescriber"]),
+            "total": p["total"]
+        })
     context = {
-        "drug": details_drug
+        "drug": details_drug,
+        "top_prescribers": data
     }
+    print(top_prescribers)
     return render(request, 'opioidID/detailsDrug.html',context)
 
 def detailsPrescriberPageView(request, npi):

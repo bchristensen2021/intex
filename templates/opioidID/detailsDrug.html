@@ -2,6 +2,43 @@
 {% load static %}
 {% block content %}
 
-    <p>I am the Details Drug</p>   
+<section class="page-section bg-primary" id="about">
+    <div class="container px-4 px-lg-5">
+        <div class="card p-3">
+            <h1 class="display-5 d-flex align-items-center">  
+                {{ drug.drug_name | title }}
+                {% if drug.is_opioid %}
+                <span class="badge badge-pill bg-danger ms-4">Opioid</span>
+                {% endif %}
+            </h1>
+            {% if not drug.is_opioid %}
+            <div class="card-text">
+                Not an opioid
+            </div>
+            {% endif %}
+        </div>
+
+        <table class="table mt-2">
+            <thead class="thead-light">
+                <tr class="table-light">
+                    <th scope="col">Top Prescribers</th>
+                    <th scope="col">Quantity Prescribed</th>
+                </tr>
+            </thead>
+            {% for p in top_prescribers %}
+            <tr class="table-primary">
+                <td>
+                    <a class="text-dark text-decoration-none" href={% url 'detailsPrescriber' npi=p.prescriber.npi %}>
+                        {{p.prescriber.full_name}}
+                    </a>
+                </td>
+                <td>
+                    {{p.total}}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</section>
     
 {% endblock %}

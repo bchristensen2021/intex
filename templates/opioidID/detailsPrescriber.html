@@ -28,7 +28,7 @@
         {% for p in prescriptions %}
         <tr class="table-primary">
             <td>
-                {{p.drug.drug_name | title}}
+                <a class="text-dark text-decoration-none" href={% url 'detailsDrug' drug_name=p.drug.drug_name %}>{{p.drug.drug_name | title}}</a>
                 {% if p.drug.is_opioid %}
                 <span class="badge badge-pill bg-danger ms-2">Opioid</span>
                 {% endif %}
