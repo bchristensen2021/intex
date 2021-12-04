@@ -1,8 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-
-    <p>I am the Details Prescriber</p>   
-    <p> {{data.first_name}} {{data.last_name}}</p>
+<section class="page-section bg-primary" id="about">
+    <div class="container px-4 px-lg-5">
+    <h1>  
+        {{prescriber.first_name}} {{prescriber.last_name}}
+    </hi>
+</div>
+</section>
 
 {% endblock %}

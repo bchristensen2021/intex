@@ -17,7 +17,6 @@ def searchPrescriberPageView(request):
 
     # if this page is showing search results
     if(request.method == "POST"):
-        print(request.POST)
 
         name = request.POST.get("name")
         gender = request.POST.get("gender")
@@ -39,10 +38,6 @@ def searchPrescriberPageView(request):
         context["search_results"] = search_results
 
 
-    else:
-        print("twas a get")
-
-
     return render(request, 'opioidID/searchPrescribers.html', context)
 
 def searchDrugPageView(request):
@@ -55,12 +50,13 @@ def detailsDrugPageView(request, drug_name):
     }
     return render(request, 'opioidID/detailsDrug.html',context)
 
-def detailsPrescriberPageView(request):
+def detailsPrescriberPageView(request, npi):
 
-    data = Prescriber.objects.all()
+    prescriber = Prescriber.objects.get(npi=npi)
 
     context = {
-        'data' : data,
+        'prescriber' : prescriber,
     }    
-    return render(request, 'opioidID/detailsPrescriber.html',)
+
+    return render(request, 'opioidID/detailsPrescriber.html', context)
 

@@ -7,46 +7,66 @@
                 <div class="col-lg-8 text-center">
                     <form name="search-prescribers" method="post" action="{% url 'searchPrescriber' %}" id="search-prescribers">
                         {% csrf_token %}
-                        <label for="first_name">Name</label>
-                        <input class="form-control form-control-lg" type="search" id="first_name" name="name" aria-label="name" placeholder="First Name">
+                        <div class="form-floating">
+                            <input class="form-control" type="search" id="first_name" name="name" aria-label="name" placeholder="First Name">
+                            <label for="first_name">Prescriber Name</label>
+                        </div>
                         <br>
 
-                        <label for="gender">Gender</label>
-                        <select class="form-control form-control-lg" id="gender" name='gender'>
-                            <option value="" disabled selected hidden>Any Gender</option>
-                            <option value="M">Male</option>
-                            <option value="F">Female</option>
-                        </select>
-                        <br>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-floating">
+                                    <select class="form-select" id="gender" name='gender'>
+                                        <option value="" selected>Any Gender</option>
+                                        <option value="M">Male</option>
+                                        <option value="F">Female</option>
+                                    </select>
+                                    <label for="gender">Gender</label>
+                                    </div>
+                                </div>
 
-                        <label for="specialty">Specialty</label>
-                        <select class="form-control form-control-lg" id='specialty' name='specialty'>
-                            <option value="" disabled selected hidden>Any Specialty</option>
-                            {% for specialty in specialties %}
-                            <option value="{{specialty.specialty}}">{{specialty.specialty}}</option>
-                            {% endfor %}
-                        </select>
-                        <br>
+                                <div class="col">
 
-                        <label for="state">State</label>
-                        <select class="form-control form-control-lg" id='specialty' name='state'>
-                                <option value="" disabled selected hidden>Any State</option>
-                                {% for state in states %}
-                                <option value="{{state}}">{{state.state_name}}</option>
-                                {% endfor %}
-                        </select>
-                        <br>
+                                    <div class="form-floating">
+                                    <select class="form-select" id='specialty' name='specialty'>
+                                        <option value="" selected>Any Specialty</option>
+                                        {% for specialty in specialties %}
+                                        <option value="{{specialty.specialty}}">{{specialty.specialty}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <label for="specialty">Specialty</label>
+                                    </div>
 
+                                </div>
+
+                                <div class="col">
+
+                                    <div class="form-floating">
+                                    <select class="form-select" id='specialty' name='state'>
+                                            <option value="" selected>Any State</option>
+                                            {% for state in states %}
+                                            <option value="{{state}}">{{state.state_name}}</option>
+                                            {% endfor %}
+                                    </select>
+                                    <label for="state">State</label>
+                                </div>
+
+                            </div>
+                        </div>
+                        
+                        <br>
                         <button class="btn btn-light btn-xl" type="submit" href="#services">Search</button>
+                        <br>
 
                     </form>
                     {% if search_results %}
                     <ul class="list-group-primary">
                         {% for prescriber in search_results %}
-                        <a href={% url "detailsPrescriber" %}
+                        <a href={% url "detailsPrescriber" npi=prescriber.npi %}
                         <li class="list-group-item d-flex justify-content-between align-items-start" aria-current="true">
-                            <div class="ms-2 me-auto">
-                              <h5 class="fw-bold">{{prescriber.full_name}} ({{prescriber.gender}})</h5>
+                            <div class="container">
+                              <h5 class="fw-bold align-left">{{prescriber.full_name}} ({{prescriber.gender}})</h5>
                               <small>{{prescriber.specialty}}, {{prescriber.state.state_name}}</small>
                             </div>
                         </li>
