@@ -11,6 +11,9 @@
                 <span class="badge badge-pill bg-danger ms-4">Opioid</span>
                 {% endif %}
             </h1>
+            <div class="card-text">
+                Total Prescriptions: {{total_prescriptions}}
+            </div>
             {% if not drug.is_opioid %}
             <div class="card-text">
                 Not an opioid

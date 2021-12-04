@@ -63,17 +63,21 @@ def searchDrugPageView(request):
 def detailsDrugPageView(request, drug_name):
     details_drug = Drug.objects.get(drug_name = drug_name)
     top_prescribers = DrugPrescriber.objects.values('prescriber').filter(drug = drug_name).annotate(total=Sum('quantity')).order_by('-total')[:10]
+    total_prescriptions = DrugPrescriber.objects.filter(drug=drug_name).aggregate(total_presc=Sum('quantity'))['total_presc']
+
+    
     data = []
     for p in top_prescribers:
         data.append({
             "prescriber": Prescriber.objects.get(pk=p["prescriber"]),
-            "total": p["total"]
+            "total": '{:,}'.format(p["total"])
         })
     context = {
         "drug": details_drug,
-        "top_prescribers": data
+        "top_prescribers": data,
+        "total_prescriptions": '{:,}'.format(total_prescriptions)
     }
-    print(top_prescribers)
+
     return render(request, 'opioidID/detailsDrug.html',context)
 
 def detailsPrescriberPageView(request, npi):
@@ -87,8 +91,8 @@ def detailsPrescriberPageView(request, npi):
     for p in prescriptions:
         data.append({
             "drug": p.drug,
-            "average": round(averagePresc.get(drug=p.drug)["average"]),
-            "quantity": p.quantity,
+            "average": '{:,}'.format(round(averagePresc.get(drug=p.drug)["average"])),
+            "quantity": '{:,}'.format(p.quantity),
             "diff": int(round(p.quantity / round(averagePresc.get(drug=p.drug)["average"]) - 1, 2) * 100)
         })
 
@@ -108,8 +112,8 @@ def deathsByStatePageView(request):
     # get all 50 states (doesn't include things like Puerto rico with no statistics)
     states = [{
         "state_name": s.state_name,
-        "population": s.population,
-        "deaths": s.deaths,
+        "population": '{:,}'.format(s.population),
+        "deaths": '{:,}'.format(s.deaths),
         "deaths_per_hundred_thousand": s.deaths_per_hundred_thousand()
     } for s in State.objects.filter(population__gt=0)]
     print(type(states))
@@ -138,7 +142,11 @@ def opioidQuantitiesPageView(request):
     # sort drugs by quantity
     data["drugs"] = sorted(data["drugs"], key=lambda d: -d["quantity"])
 
-    data["total_quantity"] = totalQuantity
+    # convert all the quantities to strings with commas
+    for d in data["drugs"]:
+        d["quantity"] = '{:,}'.format(d["quantity"])
+
+    data["total_quantity"] = '{:,}'.format(totalQuantity)
     
     return render(request, 'opioidID/opioidQuantities.html', data)
 
