@@ -190,3 +190,9 @@ def highOpioidRatioPageView(request):
     }
 
     return render(request, "opioidID/highOpioidRatio.html", context)
+
+def machineLearningPredictorPageView(request):
+    return render(request, "opioidID/machineLearningPredictor.html")
+
+def machineLearningRecommenderPageView(request):
+    return render(request, "opioidID/machineLearningRecommender.html")
