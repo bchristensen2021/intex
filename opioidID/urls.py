@@ -3,7 +3,7 @@ from .views import indexPageView, searchPrescriberPageView, searchDrugPageView, 
 
 urlpatterns = [
     path('prescribers/detail/' , detailsPrescriberPageView, name="detailsPrescriber"),
-    path('drugs/detail/' , detailsDrugPageView, name="detailsDrug"),
+    path('drugs/detail/<str:drug_name>/' , detailsDrugPageView, name="detailsDrug"),
     path('drugs/search/' , searchDrugPageView, name="searchDrug" ),
     path('prescribers/search/' , searchPrescriberPageView, name="searchPrescriber" ),
     path("", indexPageView, name="index"),
