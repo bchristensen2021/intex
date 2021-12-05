@@ -7,6 +7,7 @@ from django.db.models import Sum, Avg
 import json
 from django.conf import settings
 import os
+import urllib.request
 
 
 # Create your views here.
@@ -198,7 +199,58 @@ def highOpioidRatioPageView(request):
     return render(request, "opioidID/highOpioidRatio.html", context)
 
 def machineLearningPredictorPageView(request):
-    return render(request, "opioidID/machineLearningPredictor.html")
+
+    context = {
+        "states": State.objects.all().order_by('state_name'),
+        "specialties": Prescriber.objects.all().values('specialty').distinct().order_by('specialty'),
+    }
+
+    if(request.method == "POST"):
+        print(request.POST)
+        # send the form data to Azure endpoint
+        data = {
+            "Inputs": {
+                "WebServiceInput0":
+                [
+                    {
+                        'state': request.POST.get('state'),
+                        'specialty': request.POST.get('specialty'),
+                        'totalprescriptions': request.POST.get('total-prescriptions'),
+                        'md': bool(request.POST.get('is_md')),
+                        'pa': bool(request.POST.get('is_pa')),
+                        'od': bool(request.POST.get('is_od')),
+                        'rn': bool(request.POST.get('is_rn')),
+                    },
+                ],
+            },
+            "GlobalParameters": {
+            }
+        }
+
+        body = str.encode(json.dumps(data))
+
+        url = 'http://2fab4e09-9e05-455e-a0de-a9be72b734fa.westus.azurecontainer.io/score'
+        api_key = '8EMUPfu1TfN8A7c25bU0e0gnuaaTyl8L' # Replace this with the API key for the web service
+        headers = {'Content-Type':'application/json', 'Authorization':('Bearer '+ api_key)}
+
+        req = urllib.request.Request(url, body, headers)
+
+        try:
+            response = urllib.request.urlopen(req)
+
+            result = response.read()
+            result = json.loads(result)
+            result = result["Results"]["WebServiceOutput0"][0]
+            context["prediction"] = result["Scored Labels"]
+            context["probability"] = round(result["Scored Probabilities"] * 100)
+        except urllib.error.HTTPError as error:
+            print("The request failed with status code: " + str(error.code))
+
+            # Print the headers - they include the requert ID and the timestamp, which are useful for debugging the failure
+            print(error.info())
+            print(json.loads(error.read().decode("utf8", 'ignore')))
+
+    return render(request, "opioidID/machineLearningPredictor.html", context)
 
 def machineLearningRecommenderPageView(request):
     opioids = Drug.objects.filter(is_opioid=True)

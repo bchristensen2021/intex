@@ -4,7 +4,87 @@
 
 <section class="page-section bg-primary" id="about">
     <div class="container px-4 px-lg-5">
-        <h1 class="display-5 text-light">Placeholder for machine learning predictor</h1>
+        <h1 class="display-5 text-light">Predict Whether Prescriber Will Prescribe Opioids</h1>
+        <form name="search-prescribers" method="post" action="{% url 'machineLearningPredictor' %}" id="predict-form">
+            {% csrf_token %}
+
+            <div class="form-floating m-2">
+            <select class="form-select" id='specialty' name='specialty' required>
+                <option value="" disabled selected hidden>Select a Specialty</option>
+                {% for specialty in specialties %}
+                <option value="{{specialty.specialty}}">{{specialty.specialty}}</option>
+                {% endfor %}
+            </select>
+            <label for="specialty">Specialty</label>
+            </div>
+
+            <div class="form-floating m-2">
+            <select class="form-select" id='state' name='state' required>
+                    <option value="" disabled selected hidden>Select a State</option>
+                    {% for state in states %}
+                    <option value="{{state.state_abbrev}}">{{state.state_name}}</option>
+                    {% endfor %}
+            </select>
+            <label for="state">State</label>
+            </div>
+
+            <div class="form-floating m-2">
+                <input type="number" class="form-control" id="total-prescriptions" name="total-prescriptions" required>
+                <label for="total-prescriptions">Total Prescriptions</label>
+            </div>
+
+            <div class="card p-3 m-2">
+                <p>Credentials</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="True" name="is_md" id="is_md">
+                    <label class="form-check-label" for="id_md">
+                    Is Medical Doctor (MD)
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="True" name="is_pa" id="is_pa">
+                    <label class="form-check-label" for="id_pa">
+                    Is Physician Assistant (PA)
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="True" name="is_od" id="is_od">
+                    <label class="form-check-label" for="id_od">
+                    Is Doctor of Osteopathy (OD)
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="True" name="is_rn" id="is_rn">
+                    <label class="form-check-label" for="id_rn">
+                    Is Registered Nurse (RN)
+                    </label>
+                </div>
+
+            </div>
+
+            <div class="text-center">
+                <button class="btn btn-dark btn-xl w-100 mx-auto" type="submit">Generate Prediction</button>
+            </div>
+
+        </form>
+
+        {% if prediction == True %}
+        <div class="alert alert-danger m-2">
+            Prediction: This person is
+            <span class="fw-bold">likely</span>
+            to prescribe opioids. ({{probability}}% probability)
+        </div>
+        {% elif prediction == False %}
+        <div class="alert alert-success m-2" text-center>
+            Prediction: This person is
+            <span class="fw-bold">not likely</span>
+            to prescribe opioids. ({{probability}}% probability)
+        </div>
+        {% endif %}
+
     </div>
 </section>
     
