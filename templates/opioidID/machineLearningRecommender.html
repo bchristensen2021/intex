@@ -45,7 +45,7 @@
         </form>
 
         {% if results %}
-        <h2 class="display-10 text-light mt-4" id="result">Recommendations for {{selected_drug | title}}</h2>
+        <h2 class="display-10 text-light mt-4" id="result">Prescribers likely to prescribe {{selected_drug | title}} in the future</h2>
 
         {% for prescriber in results %}
         <a href={% url "detailsPrescriber" npi=prescriber.npi %}

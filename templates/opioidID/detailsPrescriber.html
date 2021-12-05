@@ -9,6 +9,14 @@
             {{prescriber.first_name}} {{prescriber.last_name}}
         </h1>
         <div class="card-text">
+        Credentials: 
+        {% for c in credentials %}
+        {{c.credential}}{% if forloop.last == False %},{% endif %}
+        {%endfor%}
+        {% if not credentials %}
+        None
+        {% endif %}
+        <br>
         Specialty: {{prescriber.specialty}}
         <br>
         Location: {{prescriber.state.state_name}}

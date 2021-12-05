@@ -2,7 +2,7 @@ from io import SEEK_CUR
 from django import http
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Drug, Prescriber, State, DrugPrescriber
+from .models import Drug, Prescriber, State, DrugPrescriber, Credential
 from django.db.models import Sum, Avg
 import json
 from django.conf import settings
@@ -90,6 +90,7 @@ def detailsPrescriberPageView(request, npi):
     prescriptions = DrugPrescriber.objects.filter(prescriber=npi).order_by('-quantity')
     averagePresc = DrugPrescriber.objects.values('drug').filter(drug__in=prescriptions.values('drug')).annotate(average=Avg('quantity'))
     totalPresc = prescriptions.aggregate(total=Sum('quantity'))
+    credentials = Credential.objects.filter(prescriber=npi)
 
     data = []
     for p in prescriptions:
@@ -104,7 +105,8 @@ def detailsPrescriberPageView(request, npi):
         'prescriber' : prescriber,
         'prescriptions' : data,
         'totalPresc' : totalPresc,
-        'averagePresc' : averagePresc
+        'averagePresc' : averagePresc,
+        'credentials' : credentials
     }    
 
     return render(request, 'opioidID/detailsPrescriber.html', context)
