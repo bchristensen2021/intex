@@ -9,11 +9,14 @@
             {{prescriber.first_name}} {{prescriber.last_name}}
         </h1>
         <div class="card-text">
-        Specializes in {{prescriber.specialty}}
-        <br>
-        Resides in {{prescriber.state.state_name}}
-        <br>
-        {{totalPresc.total}} total prescriptions
+            Specializes in {{prescriber.specialty}}
+            <br>
+            Resides in {{prescriber.state.state_name}}
+            <br>
+            {{totalPresc.total}} total prescriptions
+            <hr></hr>
+            <a class="badge badge-pill bg-primary btn-lg" href="{% url 'editprescriber' npi=prescriber.npi %}">Edit</a>
+            <a class="badge badge-pill bg-primary btn-lg ms-3">Delete</a>
         </div>
     </div>
 

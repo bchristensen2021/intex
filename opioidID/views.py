@@ -97,3 +97,40 @@ def detailsPrescriberPageView(request, npi):
 
     return render(request, 'opioidID/detailsPrescriber.html', context)
 
+def editPageView(request, npi):
+    prescriber = Prescriber.objects.get(npi=npi)
+    prescriptions = DrugPrescriber.objects.filter(prescriber=npi).order_by('-quantity')
+    averagePresc = DrugPrescriber.objects.values('drug').filter(drug__in=prescriptions.values('drug')).annotate(average=Avg('quantity'))
+    totalPresc = prescriptions.aggregate(total=Sum('quantity'))
+
+    data = []
+    for p in prescriptions:
+        data.append({
+            "drug": p.drug,
+            "quantity": p.quantity,
+            "average": round(averagePresc.get(drug=p.drug)["average"]),
+            "diff": int(round(p.quantity / round(averagePresc.get(drug=p.drug)["average"]) - 1, 2) * 100)
+        })
+    
+    context = {
+        "states": State.objects.all().order_by('state_name'),
+        "specialties": Prescriber.objects.all().values('specialty').distinct().order_by('specialty'),
+        "genders": Prescriber.objects.all().values('gender').distinct(),
+        "prescriber": prescriber,
+        'prescriptions' : data,
+    }
+    if(request.method=="POST"):
+        prescriber.first_name=request.POST['fname']
+        prescriber.last_name=request.POST['lname']
+        prescriber.gender=request.POST.get('gender')
+        prescriber.specialty=request.POST.get('specialty')
+        prescriber.state_id=request.POST.get('state')
+        
+        prescriber.save()
+
+        quantity = request.POST.getlist('quantity')
+        for p, q in zip(prescriptions, quantity):
+            p.quantity=int(q)
+            p.save()
+
+    return render(request,'opioidID/editPrescriber.html', context)

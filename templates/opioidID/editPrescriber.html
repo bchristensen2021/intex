@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="page-section bg-primary" id="about">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 text-light">Edit Prescriber</h1>
+                <form name="edit-prescribers" method="post" id="edit-prescribers" onsubmit="return alert('Successfully Updated!');">
+                    {% csrf_token %}
+                    <div class="form-floating">
+                        <input class="form-control" type="search" id="fname" name="fname" aria-label="name" placeholder="Prescriber First Name" value="{{prescriber.first_name}}">
+                        <label for="fname">Prescriber First Name</label>
+                    </div>
+                    <div class="py-1"></div>
+                    <div class="form-floating">
+                        <input class="form-control" type="search" id="lname" name="lname" aria-label="name" placeholder="Prescriber Last Name" value="{{prescriber.last_name}}">
+                        <label for="lname">Prescriber Last Name</label>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col">
+                            <div class="form-floating">
+                            <select class="form-select" id="gender" name='gender'>
+                                <option value="{{prescriber.gender}}" selected hidden>{{prescriber.gender}}</option>
+                                <option value="M">Male</option>
+                                <option value="F">Female</option>
+                            </select>
+                            <label for="gender">Gender</label>
+                            </div>
+                        </div>
+
+                        <div class="col">
+
+                            <div class="form-floating">
+                            <select class="form-select" id='specialty' name='specialty'>
+                                <option value="{{prescriber.specialty}}" selected hidden>{{prescriber.specialty}}</option>
+                                {% for specialty in specialties %}
+                                <option value="{{specialty.specialty}}">{{specialty.specialty}}</option>
+                                {% endfor %}
+                            </select>
+                            <label for="specialty">Specialty</label>
+                            </div>
+                        </div>
+
+                        <div class="col">
+
+                            <div class="form-floating">
+                            <select class="form-select" id='state' name='state'>
+                                    <option value="{{prescriber.state.state_abbrev}}" selected hidden>{{prescriber.state}}</option>
+                                    {% for state in states %}
+                                    <option value="{{state.state_abbrev}}">{{state.state_name}}</option>
+                                    {% endfor %}
+                            </select>
+                            <label for="state">State</label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <table class="table mt-2">
+                        <thead>
+                            <tr class="table-light">
+                                <th scope="col">Drug Name</th>
+                                <th scope="col">Quantity Prescribed</th>
+                                <th scope="col">Average Prescribed by All Prescribers</th>
+                            </tr>
+                        </thead>
+                        {% for p in prescriptions %}
+                        <tr class="table-primary">
+                            <td>
+                                <a class="text-dark text-decoration-none" href={% url 'detailsDrug' drug_name=p.drug.drug_name %}>{{p.drug.drug_name | title}}</a>
+                                {% if p.drug.is_opioid %}
+                                <span class="badge badge-pill bg-danger ms-2">Opioid</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                
+                                <input name="quantity"class="col-sm-3" type="number" value="{{p.quantity}}">
+                                {% if p.diff > 75 %}
+                                <span class="badge badge-pill bg-success ms-2">{{ p.diff}}% above average</span>
+                                {% elif p.diff < -75 %}
+                                <span class="badge badge-pill bg-warning ms-2">{{ p.diff}}% below average</span>
+                                {% endif %}  
+                            </td>
+                            <td>{{p.average}}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    <div class="col ">
+                        <button class="btn btn-light btn-xl w-100" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+    </div>    
+</section>
+{% endblock content %}
