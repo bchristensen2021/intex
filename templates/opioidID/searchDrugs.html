@@ -47,7 +47,7 @@
                     {% for drug in search_results %}
                     <a href={% url "detailsDrug" drug_name=drug.drug_name %}
                     <li class="list-group-item d-flex justify-content-between align-items-start mt-2" aria-current="true">
-                        <div class="ms-2 me-auto">
+                        <div class="p-2 me-auto">
                             <h5 class="fw-bold">{{drug.drug_name | title }}</h5>
                             {% if drug.is_opioid %}
                                 <small>Opioid</small>

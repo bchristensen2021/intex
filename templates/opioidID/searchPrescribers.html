@@ -65,9 +65,15 @@
                     {% for prescriber in search_results %}
                     <a href={% url "detailsPrescriber" npi=prescriber.npi %}
                     <li class="list-group-item d-flex justify-content-between align-items-start mt-2" aria-current="true">
-                        <div class="ms-2 me-auto">
-                            <h5 class="fw-bold">{{prescriber.full_name}} ({{prescriber.gender}})</h5>
-                            <small>{{prescriber.specialty}}, {{prescriber.state.state_name}}</small>
+                        <div class="me-auto p-2">
+                            <h5 class="fw-bold">{{prescriber.full_name}}</h5>
+                            <small>
+                                {% if prescriber.gender == "M" %}
+                                Male,
+                                {% else %}
+                                Female,
+                                {% endif %}
+                                {{prescriber.specialty}}, {{prescriber.state.state_name}}</small>
                         </div>
                     </li>
                     </a>
