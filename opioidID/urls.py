@@ -1,3 +1,4 @@
+from os import name
 from django.urls import path
 
 from .views import *
@@ -16,7 +17,9 @@ urlpatterns = [
     path('analytics/machine-learning/recommender', machineLearningRecommenderPageView, name="machineLearningRecommender"),
     path('analytics/machine-learning/predictor', machineLearningPredictorPageView, name="machineLearningPredictor"),
     path("", indexPageView, name="index"),
-    path("editprescriber/<int:npi>", editPageView, name="editprescriber")
+    path("editprescriber/<int:npi>", editPageView, name="editprescriber"),
+    path("createprescriber", createPrescriberPageView, name="createprescriber"),
+    path("deleteprescriber/<int:npi>", deletePrescriberPageView, name="deleteprescriber")
 ]
 
 

@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section class="page-section bg-primary" id="about">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 text-light">Create Prescriber</h1>
+                <form name="edit-prescribers" method="post" id="edit-prescribers" onsubmit="return alert('Successfully Created!');">
+                    {% csrf_token %}
+                    <div class="form-floating">
+                        <input class="form-control" type="search" id="npi" name="npi" aria-label="name" placeholder="Prescriber NPI" pattern="[0-9]+">
+                        <label for="npi">Prescriber NPI</label>
+                    </div>
+                    <div class="py-1"></div>
+                    <div class="form-floating">
+                        <input class="form-control text-capitalize" type="search" id="fname" name="fname" aria-label="name" placeholder="Prescriber First Name">
+                        <label for="fname">Prescriber First Name</label>
+                    </div>
+                    <div class="py-1"></div>
+                    <div class="form-floating">
+                        <input class="form-control text-capitalize" type="search" id="lname" name="lname" aria-label="name" placeholder="Prescriber Last Name">
+                        <label for="lname">Prescriber Last Name</label>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col">
+                            <div class="form-floating">
+                            <select class="form-select" id="gender" name='gender' required>
+                                <option value="" selected hidden></option>
+                                <option value="M">Male</option>
+                                <option value="F">Female</option>
+                            </select>
+                            <label for="gender">Gender</label>
+                            </div>
+                        </div>
+
+                        <div class="col">
+
+                            <div class="form-floating">
+                            <select class="form-select" id='specialty' name='specialty' required>
+                                <option value="" selected hidden></option>
+                                {% for specialty in specialties %}
+                                <option value="{{specialty.specialty}}">{{specialty.specialty}}</option>
+                                {% endfor %}
+                            </select>
+                            <label for="specialty">Specialty</label>
+                            </div>
+                        </div>
+
+                        <div class="col">
+
+                            <div class="form-floating">
+                            <select class="form-select" id='state' name='state' required>
+                                    <option value="" selected hidden></option>
+                                    {% for state in states %}
+                                    <option value="{{state.state_abbrev}}">{{state.state_name}}</option>
+                                    {% endfor %}
+                            </select>
+                            <label for="state">State</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <button class="btn btn-light btn-xl w-100" type="submit">Submit</button>
+                        </div>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

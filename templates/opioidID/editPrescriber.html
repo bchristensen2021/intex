@@ -7,7 +7,7 @@
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-lg-8">
                 <h1 class="display-4 text-light">Edit Prescriber</h1>
-                <form name="edit-prescribers" method="post" id="edit-prescribers" onsubmit="return alert('Successfully Updated!');">
+                <form name="edit-prescribers" method="post" id="edit-prescribers" onsubmit="return alert('Successfully Updated! Please refresh the page after it's loaded');">
                     {% csrf_token %}
                     <div class="form-floating">
                         <input class="form-control" type="search" id="fname" name="fname" aria-label="name" placeholder="Prescriber First Name" value="{{prescriber.first_name}}">
@@ -57,6 +57,7 @@
                         </div>
 
                     </div>
+                    
                     <table class="table mt-2">
                         <thead>
                             <tr class="table-light">
@@ -86,7 +87,8 @@
                         </tr>
                         {% endfor %}
                     </table>
-                    <div class="col ">
+                    
+                    <div class="col py-4">
                         <button class="btn btn-light btn-xl w-100" type="submit">Submit</button>
                     </div>
                 </form>

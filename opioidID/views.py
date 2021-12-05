@@ -151,6 +151,34 @@ def editPageView(request, npi):
 
     return render(request,'opioidID/editPrescriber.html', context)
 
+def createPrescriberPageView(request):
+    
+    context={
+        "states": State.objects.all().order_by('state_name'),
+        "specialties": Prescriber.objects.all().values('specialty').distinct().order_by('specialty'),
+    }
+
+    if (request.method=="POST"):
+        prescriber = Prescriber()
+        state = State.objects.get(state_abbrev=request.POST.get('state'))
+
+        prescriber.npi = request.POST["npi"]
+        prescriber.first_name = request.POST["fname"].capitalize()
+        prescriber.last_name = request.POST["lname"].capitalize()
+        prescriber.gender = request.POST.get("gender")
+        prescriber.specialty = request.POST.get("specialty")
+        prescriber.state = state
+
+        prescriber.save()
+
+    return render(request, "opioidID/createPrescriber.html", context)
+
+def deletePrescriberPageView(request,npi):
+    data=Prescriber.objects.get(npi=npi)
+    data.delete()
+
+    return searchPrescriberPageView(request)
+
 def analyticsPageView(request):
     return render(request, 'opioidID/analytics.html')
 
@@ -310,4 +338,4 @@ def machineLearningRecommenderPageView(request):
         context["results"] = prescribers
         context["selected_drug"] = selected_drug
     return render(request, "opioidID/machineLearningRecommender.html", context)
->>>>>>> f550732584bb74093e6a59278f51b3974f439f2f
+

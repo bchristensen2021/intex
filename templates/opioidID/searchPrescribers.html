@@ -58,7 +58,7 @@
 
                         </div>
                 </form>
-
+                <a class="form-control badge badge-pill bg-primary btn-xl" href="{% url 'createprescriber' %}">Click here to create a new prescriber</a>
                 {% if search_results %}
                 <h2 class="display-10 mt-3 text-light">Search Results</h2>
                 <ul class="list-group-primary mt-2 ps-0">
@@ -80,6 +80,7 @@
                     {% endfor %}
                 </ul>
                 {% endif %}
+                
             </div>
         </div>
     </div>
