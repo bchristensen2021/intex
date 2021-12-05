@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="page-section bg-primary" id="about">
+    <div class="container px-4 px-lg-5">
+        <h1 class="display-5 text-light">Opioid Deaths by State</h1>
+        <table class="table mt-2">
+            <thead class="thead-light">
+                <tr class="table-light">
+                    <th scope="col">Ranking</th>
+                    <th scope="col">State</th>
+                    <th scope="col">Deaths</th>
+                    <th scope="col">Population</th>
+                    <th scope="col">Deaths Per 100,000 People
+                </tr>
+            </thead>
+            {% for state in states %}
+            <tr class="table-primary">
+                <td>
+                    {{forloop.counter}}
+                </td>
+                <td>
+                    {{state.state_name}}
+                </td>
+                <td>
+                    {{state.deaths}}
+                </td>
+                <td>
+                    {{state.population}}
+                </td>
+                <td>
+                    {{state.deaths_per_hundred_thousand}}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</section>
+    
+{% endblock %}

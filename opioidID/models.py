@@ -66,6 +66,9 @@ class State(models.Model):
     population = models.IntegerField(null=False, db_column="population")
     deaths = models.IntegerField(null=False, db_column="deaths")
 
+    def deaths_per_hundred_thousand(self):
+        return round(self.deaths/self.population * 100000, 2)
+
     class Meta:
         db_table = "state"
         managed = False

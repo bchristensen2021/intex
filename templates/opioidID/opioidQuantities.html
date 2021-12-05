@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="page-section bg-primary" id="about">
+    <div class="container px-4 px-lg-5">
+        <h1 class="display-5 text-light">Prescription Quantities by Opioid</h1>
+        <table class="table mt-2">
+            <thead class="thead-light">
+                <tr class="table-light">
+                    <th scope="col">Ranking</th>
+                    <th scope="col">Opioid Name</th>
+                    <th scope="col">Total Quantity Prescribed</th>
+                </tr>
+            </thead>
+            {% for o in drugs %}
+            <tr class="table-primary">
+                <td>
+                        {{forloop.counter}}
+                </td>
+                <td>
+                    <a class="text-dark fw-bold" href={% url 'detailsDrug' drug_name=o.drug_name %}>
+                        {{o.drug_name | title}}
+                    </a>
+                </td>
+                <td>
+                    {{o.quantity}}
+                </td>
+            </tr>
+            {% endfor %}
+            <tr class="table-primary">
+                <td class="fw-bold">
+                    Total
+                </td>
+                <td>
+                </td>
+                <td>
+                    {{total_quantity}}
+                </td>
+            </tr>
+        </table>
+    </div>
+</section>
+    
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="page-section bg-primary" id="about">
+    <div class="container px-4 px-lg-5">
+        <h1 class="display-5 text-light">Machine Learning<h1>
+        <a class="btn btn-dark m-2" href={% url 'machineLearningPredictor' %}>Predict Whether a Prescriber Will Prescribe Opioids</a>
+        <br>
+        <a class="btn btn-dark m-2" href={% url 'machineLearningRecommender' %}>Recommend Prescribers for a Specific Drug</a>
+        <h1 class="display-5 text-light mt-4">Additional Analytics</h1>
+        <a class="btn btn-dark m-2" href={% url 'highOpioidPrescribers' %}>Prescribers Who Prescribe Mainly Opioids</a>
+        <br>
+        <a class="btn btn-dark m-2" href={% url 'opioidQuantities' %}>Prescription Quantities by Opioid</a>
+        <br>
+        <a class="btn btn-dark m-2" href={% url 'deathsByState' %}>Opioid Deaths by State</a>
+        <!-- Outdated since the next link does all the same stuff
+        <a class="btn btn-dark" href={% url 'onlyOpioids' %}>Prescribers Who Prescribe Only Opioids</a>
+        <br>
+        -->
+    </div>
+</section>
+    
+{% endblock %}

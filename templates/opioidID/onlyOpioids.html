@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="page-section bg-primary" id="about">
+    <div class="container px-4 px-lg-5">
+        <h1 class="display-5 text-light">Prescribers Who Prescribe Only Opioids</h1>
+        {% for prescriber in prescribedOnlyOpioids %}
+        <a href={% url "detailsPrescriber" npi=prescriber.npi %}
+        <li class="list-group-item d-flex justify-content-between align-items-start mt-2" aria-current="true">
+            <div class="ms-2 me-auto">
+                <h5 class="fw-bold">{{prescriber.full_name}} ({{prescriber.gender}})</h5>
+                <small>{{prescriber.specialty}}, {{prescriber.state.state_name}}</small>
+            </div>
+        </li>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+    
+{% endblock %}

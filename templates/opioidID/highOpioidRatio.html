@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="page-section bg-primary" id="about">
+    <div class="container px-4 px-lg-5">
+        <h1 class="display-5 text-light">Prescribers Who Prescribe Mainly Opioids</h1>
+        <table class="table mt-2">
+            <thead>
+                <tr class="table-light">
+                    <th scope="col">Prescriber Name</th>
+                    <th scope="col">Opioids Prescribed</th>
+                    <th scope="col">Total Drugs Prescribed</th>
+                    <th scope="col">Opioid Percentage</th>
+                </tr>
+            </thead>
+            {% for p in highOpioidRatioPrescribers %}
+            <tr class="table-primary">
+                <td>
+                    <a class="text-dark fw-bold" href={% url 'detailsPrescriber' npi=p.npi %}>{{p.full_name | title}}</a>
+                </td>
+                <td>
+                    {{p.opioid_presc_total}}
+                </td>
+                <td>
+                    {{p.presc_total}}
+                </td>
+                <td>
+                    {{p.percent_opioid}}%
+                    {% if p.percent_opioid == 100 %}
+                    <span class="badge badge-pill bg-danger ms-2">Only Opioids</span>
+                    {% endif %}
+                </td>
+
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</section>
+    
+{% endblock %}

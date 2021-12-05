@@ -9,11 +9,27 @@
             {{prescriber.first_name}} {{prescriber.last_name}}
         </h1>
         <div class="card-text">
+
             Specializes in {{prescriber.specialty}}
             <br>
             Resides in {{prescriber.state.state_name}}
             <br>
             {{totalPresc.total}} total prescriptions
+            
+
+            Credentials: 
+            {% for c in credentials %}
+            {{c.credential}}{% if forloop.last == False %},{% endif %}
+            {%endfor%}
+            {% if not credentials %}
+            None
+            {% endif %}
+            <br>
+            Specialty: {{prescriber.specialty}}
+            <br>
+            Location: {{prescriber.state.state_name}}
+            <br>
+            Total Prescriptions: {{totalPresc.total}}
             <hr></hr>
             <a class="badge badge-pill bg-primary btn-lg" href="{% url 'editprescriber' npi=prescriber.npi %}">Edit</a>
             <a class="badge badge-pill bg-primary btn-lg ms-3">Delete</a>
@@ -31,7 +47,7 @@
         {% for p in prescriptions %}
         <tr class="table-primary">
             <td>
-                <a class="text-dark text-decoration-none" href={% url 'detailsDrug' drug_name=p.drug.drug_name %}>{{p.drug.drug_name | title}}</a>
+                <a class="text-dark fw-bold" href={% url 'detailsDrug' drug_name=p.drug.drug_name %}>{{p.drug.drug_name | title}}</a>
                 {% if p.drug.is_opioid %}
                 <span class="badge badge-pill bg-danger ms-2">Opioid</span>
                 {% endif %}
