@@ -1,8 +1,12 @@
+from io import SEEK_CUR
 from django import http
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Drug, Prescriber, State, DrugPrescriber
 from django.db.models import Sum, Avg
+import json
+from django.conf import settings
+import os
 
 
 # Create your views here.
@@ -195,4 +199,21 @@ def machineLearningPredictorPageView(request):
     return render(request, "opioidID/machineLearningPredictor.html")
 
 def machineLearningRecommenderPageView(request):
-    return render(request, "opioidID/machineLearningRecommender.html")
+    opioids = Drug.objects.filter(is_opioid=True)
+    other_drugs = Drug.objects.filter(is_opioid=False)
+    file = open(os.path.join(settings.STATIC_ROOT, 'js/recommendations.json'))
+    recommendations = json.load(file)
+
+    context = {
+        "opioids": opioids,
+        "other_drugs": other_drugs,
+    }
+    
+    prescribers = []
+    if(request.method == "POST"):
+        selected_drug = request.POST.get('drug')
+        for result in recommendations[selected_drug]:
+            prescribers.append(Prescriber.objects.get(npi=recommendations[selected_drug][result]))
+        context["results"] = prescribers
+        context["selected_drug"] = selected_drug
+    return render(request, "opioidID/machineLearningRecommender.html", context)

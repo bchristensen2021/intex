@@ -4,7 +4,68 @@
 
 <section class="page-section bg-primary" id="about">
     <div class="container px-4 px-lg-5">
-        <h1 class="display-5 text-light">Placeholder for machine learning recommender</h1>
+        <h1 class="display-5 text-light">Prescriber Recommender</h1>
+        <h2 class="display-10 text-light">Find prescribers likely to prescribe a specific drug<br>(who haven't prescribed it yet)</h2>
+        <form name="search-drugs" method="post" action="{% url 'machineLearningRecommender' %}" id="recommend-drug">
+        {% csrf_token %}
+        <div class="row mt-4">
+
+            <div class="col">
+
+                <div class="form-floating">
+                    <select class="form-select" id='drug' name='drug' required>
+
+                        <option value="" disabled selected hidden>Select a drug</option>
+
+                        <optgroup label="Opioids">
+                        {% for drug in opioids %}
+                        <option value="{{drug.drug_name}}">{{drug.drug_name | title }}</option>
+                        {% endfor %}
+                        </optgroup>
+
+                        <optgroup label="Other Drugs">
+                        {% for drug in other_drugs %}
+                        <option value="{{drug.drug_name}}">{{drug.drug_name | title }}</option>
+                        {% endfor %}
+                        </optgroup>
+
+                    </select>
+                    <label for="drug">Drug</label>
+
+                </div>
+
+            </div>
+
+            <div class="col">
+                <button class="btn btn-light btn-xl w-100" type="submit">Search</button>
+            </div>
+
+        </div>
+
+        </form>
+
+        {% if results %}
+        <h2 class="display-10 text-light mt-4" id="result">Recommendations for {{selected_drug | title}}</h2>
+
+        {% for prescriber in results %}
+        <a href={% url "detailsPrescriber" npi=prescriber.npi %}
+        <li class="list-group-item d-flex justify-content-between align-items-start mt-2" aria-current="true">
+            <div class="me-auto p-2">
+                <h5 class="fw-bold">{{prescriber.full_name}}</h5>
+                <small>
+                    {% if prescriber.gender == "M" %}
+                    Male,
+                    {% else %}
+                    Female,
+                    {% endif %}
+                    {{prescriber.specialty}}, {{prescriber.state.state_name}}</small>
+            </div>
+        </li>
+        </a>
+        {% endfor %}
+
+        {% endif %}
+
     </div>
 </section>
     
