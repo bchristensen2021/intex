@@ -75,13 +75,13 @@
         <div class="alert alert-danger m-2">
             Prediction: This person is
             <span class="fw-bold">likely</span>
-            to prescribe opioids. ({{probability}}% probability)
+            to prescribe opioids ({{probability}}% probability)
         </div>
         {% elif prediction == False %}
         <div class="alert alert-success m-2" text-center>
             Prediction: This person is
             <span class="fw-bold">not likely</span>
-            to prescribe opioids. ({{probability}}% probability)
+            to prescribe opioids ({{probability}}% probability)
         </div>
         {% endif %}
 
