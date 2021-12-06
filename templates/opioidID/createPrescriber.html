@@ -6,20 +6,20 @@
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-lg-8">
                 <h1 class="display-4 text-light">Create Prescriber</h1>
-                <form name="edit-prescribers" method="post" id="edit-prescribers" onsubmit="return alert('Successfully Created!');">
+                <form name="edit-prescribers" method="post" id="create-prescriber" onsubmit="return alert('Successfully Created!');">
                     {% csrf_token %}
                     <div class="form-floating">
-                        <input class="form-control" type="search" id="npi" name="npi" aria-label="name" placeholder="Prescriber NPI" pattern="[0-9]+">
+                        <input class="form-control" type="number" id="npi" name="npi" aria-label="name" placeholder="Prescriber NPI" pattern="[0-9]+">
                         <label for="npi">Prescriber NPI</label>
                     </div>
                     <div class="py-1"></div>
                     <div class="form-floating">
-                        <input class="form-control text-capitalize" type="search" id="fname" name="fname" aria-label="name" placeholder="Prescriber First Name">
+                        <input class="form-control text-capitalize" type="text" id="fname" name="fname" aria-label="name" placeholder="Prescriber First Name">
                         <label for="fname">Prescriber First Name</label>
                     </div>
                     <div class="py-1"></div>
                     <div class="form-floating">
-                        <input class="form-control text-capitalize" type="search" id="lname" name="lname" aria-label="name" placeholder="Prescriber Last Name">
+                        <input class="form-control text-capitalize" type="text" id="lname" name="lname" aria-label="name" placeholder="Prescriber Last Name">
                         <label for="lname">Prescriber Last Name</label>
                     </div>
                     <div class="row mt-2">
@@ -62,8 +62,7 @@
                         <div class="col">
                             <button class="btn btn-light btn-xl w-100" type="submit">Submit</button>
                         </div>
-                    </div>
-                    
+                    </div>                    
                 </form>
             </div>
         </div>

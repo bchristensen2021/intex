@@ -35,6 +35,7 @@
         </div>
     </div>
 
+    {% if totalPresc.total > 0 %}
     <table class="table mt-2">
         <thead>
             <tr class="table-light">
@@ -62,6 +63,7 @@
         </tr>
         {% endfor %}
     </table>
+    {% endif %}
 </div>
 </section>
 

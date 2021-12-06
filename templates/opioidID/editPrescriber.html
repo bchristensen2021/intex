@@ -7,7 +7,7 @@
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-lg-8">
                 <h1 class="display-4 text-light">Edit Prescriber</h1>
-                <form name="edit-prescribers" method="post" id="edit-prescribers" onsubmit="return alert('Successfully Updated! Please refresh the page after it's loaded');">
+                <form name="edit-prescribers" method="post" id="edit-prescribers" action={% url 'detailsPrescriber' npi=prescriber.npi %} onsubmit="return alert('Successfully Updated!');">
                     {% csrf_token %}
                     <div class="form-floating">
                         <input class="form-control" type="search" id="fname" name="fname" aria-label="name" placeholder="Prescriber First Name" value="{{prescriber.first_name}}">
@@ -57,37 +57,6 @@
                         </div>
 
                     </div>
-                    
-                    <table class="table mt-2">
-                        <thead>
-                            <tr class="table-light">
-                                <th scope="col">Drug Name</th>
-                                <th scope="col">Quantity Prescribed</th>
-                                <th scope="col">Average Prescribed by All Prescribers</th>
-                            </tr>
-                        </thead>
-                        {% for p in prescriptions %}
-                        <tr class="table-primary">
-                            <td>
-                                <a class="text-dark text-decoration-none" href={% url 'detailsDrug' drug_name=p.drug.drug_name %}>{{p.drug.drug_name | title}}</a>
-                                {% if p.drug.is_opioid %}
-                                <span class="badge badge-pill bg-danger ms-2">Opioid</span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                
-                                <input name="quantity"class="col-sm-3" type="number" value="{{p.quantity}}">
-                                {% if p.diff > 75 %}
-                                <span class="badge badge-pill bg-success ms-2">{{ p.diff}}% above average</span>
-                                {% elif p.diff < -75 %}
-                                <span class="badge badge-pill bg-warning ms-2">{{ p.diff}}% below average</span>
-                                {% endif %}  
-                            </td>
-                            <td>{{p.average}}</td>
-                        </tr>
-                        {% endfor %}
-                    </table>
-                    
                     <div class="col py-4">
                         <button class="btn btn-light btn-xl w-100" type="submit">Submit</button>
                     </div>
