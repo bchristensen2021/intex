@@ -17,23 +17,26 @@
             </div>
         </header>
 
-{% endblock %}
 
 
-{% comment %}     
         <!-- About-->
         <section class="page-section bg-primary" id="about">
             <div class="container px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-lg-8 text-center">
-                        <h2 class="text-white mt-0">We've got what you need!</h2>
+                        <h2 class="text-white mt-0">Additional Analytics</h2>
                         <hr class="divider divider-light" />
-                        <p class="text-white-75 mb-4">Start Bootstrap has everything you need to get your new website up and running in no time! Choose one of our open source, free to download, and easy to use themes! No strings attached!</p>
-                        <a class="btn btn-light btn-xl" href="#services">Get Started!</a>
+                        <p class="text-white-75 mb-4">Use predictive machine-learning models to stop opioid abuse in its tracks.</p>
+                        <a class="btn btn-light btn-xl" href={% url 'analytics' %}>View Analytics</a>
                     </div>
                 </div>
             </div>
         </section>
+
+        
+        {% endblock %}
+
+        {% comment %}
         <!-- Services-->
         <section class="page-section" id="services">
             <div class="container px-4 px-lg-5">
@@ -228,6 +231,6 @@
         <!-- * *                               SB Forms JS                               * *-->
         <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
         <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script> {% endcomment %}
-    </body>
-</html>
+        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+
+        {% endcomment %}
