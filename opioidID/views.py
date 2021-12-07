@@ -148,6 +148,7 @@ def editPageView(request, npi):
         for p, q in zip(prescriptions, quantity):
             p.quantity=int(q)
             p.save()
+        return detailsPrescriberPageView(request, npi)
 
     return render(request,'opioidID/editPrescriber.html', context)
 
@@ -170,6 +171,7 @@ def createPrescriberPageView(request):
         prescriber.state = state
 
         prescriber.save()
+        return detailsPrescriberPageView(request, prescriber.npi)
 
     return render(request, "opioidID/createPrescriber.html", context)
 
@@ -339,3 +341,25 @@ def machineLearningRecommenderPageView(request):
         context["selected_drug"] = selected_drug
     return render(request, "opioidID/machineLearningRecommender.html", context)
 
+def editDrugQuantityPageView(request, npi):
+    prescriber = Prescriber.objects.get(npi=npi)
+    context = {
+        "prescriber": prescriber,
+        "drugs": Drug.objects.all()
+    }
+    if(request.method == "POST"):
+        print(request.POST)
+        drug = request.POST.get('drug')
+        qty = int(request.POST.get('qty'))
+        print(drug, npi, qty)
+        try:
+            record = DrugPrescriber.objects.get(drug=drug, prescriber=npi)
+        except DrugPrescriber.DoesNotExist:
+            record = DrugPrescriber()
+            record.prescriber = prescriber
+            record.drug = Drug.objects.get(drug_name=drug)
+        record.quantity = qty
+        record.save()
+        return detailsPrescriberPageView(request, prescriber.npi)
+
+    return render(request, "opioidID/editDrugQuantity.html", context)

@@ -17,9 +17,10 @@ urlpatterns = [
     path('analytics/machine-learning/recommender', machineLearningRecommenderPageView, name="machineLearningRecommender"),
     path('analytics/machine-learning/predictor', machineLearningPredictorPageView, name="machineLearningPredictor"),
     path("", indexPageView, name="index"),
-    path("editprescriber/<int:npi>", editPageView, name="editprescriber"),
-    path("createprescriber", createPrescriberPageView, name="createprescriber"),
-    path("deleteprescriber/<int:npi>", deletePrescriberPageView, name="deleteprescriber")
+    path("prescribers/edit/<int:npi>", editPageView, name="editprescriber"),
+    path("prescribers/create", createPrescriberPageView, name="createprescriber"),
+    path("prescribers/delete/<int:npi>", deletePrescriberPageView, name="deleteprescriber"),
+    path("prescribers/edit-drug-quantity/<int:npi>", editDrugQuantityPageView, name="editDrugQuantity")
 ]
 
 

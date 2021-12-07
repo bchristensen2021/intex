@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="page-section bg-primary" id="about">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 text-light">Edit Drug Quantity</h1>
+                <h2 class="display-9 text-light">For {{prescriber.full_name}}</h2>
+                <form name="edit-prescribers" method="post" id="edit-quantity" action={% url 'editDrugQuantity' npi=prescriber.npi %} onsubmit="return alert('Successfully Updated!');">
+                    {% csrf_token %}
+                    <div class="row mt-2">
+                        <div class="col">
+
+                            <div class="form-floating">
+                                <select class="form-select" id="drug" name="drug" area-label="drug" required>
+                                    <option value="" disabled selected hidden>Select a Drug</option>
+                                    {% for drug in drugs %}
+                                    <option value={{drug.drug_name}}>{{drug.drug_name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="drug">Drug</label>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="form-floating">
+                                <input class="form-control" type="number" id="qty" name="qty" aria-label="quantity" required>
+                                <label for="qty">New Drug Quantity</label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col py-4">
+                        <button class="btn btn-light btn-xl w-100" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+    </div>    
+</section>
+{% endblock content %}

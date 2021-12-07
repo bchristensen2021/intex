@@ -7,7 +7,7 @@
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-lg-8">
                 <h1 class="display-4 text-light">Edit Prescriber</h1>
-                <form name="edit-prescribers" method="post" id="edit-prescribers" action={% url 'detailsPrescriber' npi=prescriber.npi %} onsubmit="return alert('Successfully Updated!');">
+                <form name="edit-prescribers" method="post" id="edit-prescribers" action={% url 'editprescriber' npi=prescriber.npi %} onsubmit="return alert('Successfully Updated!');">
                     {% csrf_token %}
                     <div class="form-floating">
                         <input class="form-control" type="search" id="fname" name="fname" aria-label="name" placeholder="Prescriber First Name" value="{{prescriber.first_name}}">
@@ -61,6 +61,7 @@
                         <button class="btn btn-light btn-xl w-100" type="submit">Submit</button>
                     </div>
                 </form>
+                <a class="form-control badge badge-pill bg-primary btn-xl" href="{% url 'editDrugQuantity' npi=prescriber.npi %}">Click here to edit prescription quantities</a>
             </div>
         </div>
         
