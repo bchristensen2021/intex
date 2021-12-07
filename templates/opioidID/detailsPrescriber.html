@@ -9,11 +9,6 @@
             {{prescriber.first_name}} {{prescriber.last_name}}
         </h1>
         <div class="card-text">
-
-            Specializes in {{prescriber.specialty}}
-            <br>
-            Resides in {{prescriber.state.state_name}}
-            <br>
             Credentials: 
             {% for c in credentials %}
             {{c.credential}}{% if forloop.last == False %},{% endif %}
