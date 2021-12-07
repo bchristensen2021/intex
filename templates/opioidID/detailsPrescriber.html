@@ -14,8 +14,6 @@
             <br>
             Resides in {{prescriber.state.state_name}}
             <br>
-            Total prescriptions: {{totalPresc.total}} 
-            <br>
             Credentials: 
             {% for c in credentials %}
             {{c.credential}}{% if forloop.last == False %},{% endif %}
