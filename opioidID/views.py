@@ -55,7 +55,7 @@ def searchDrugPageView(request):
     if(request.method == "POST"):
         drugName = request.POST.get("drug_name")
         isOpioid = request.POST.get("is_opioid")
-        search_results = Drug.objects.filter(drug_name__contains=drugName)
+        search_results = Drug.objects.filter(drug_name__contains=drugName.upper())
         if(isOpioid == "True"):
             search_results = search_results.filter(is_opioid=True)
         elif(isOpioid == "False"):
